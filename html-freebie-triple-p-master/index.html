@@ -36,13 +36,53 @@
       font-weight: bold;
       margin-top: 20px;
     }
+    #timer {
+      font-size: 36px;
+      font-weight: bold;
+      color: #007BFF;
+      margin-top: 20px;
+    }
   </style>
 </head>
 <body>
   <img src="https://lh3.googleusercontent.com/a-/ALV-UjUjiEqirLK1mV03ob82Nvms0Bpc7fAmmlR0b2l8EfWEc_yQDYM=s265-w265-h265" alt="Profile Picture">
   <h1>⚠️ Page Under Maintenance</h1>
-  <p>DUFASHWENAYO PATRICK  IS WORKING ON ISSUE AS SOON WE WILL BE HERE SOON</p>
+  <p>DUFASHWENAYO PATRICK IS WORKING ON THE ISSUE. WE WILL BE BACK SOON!</p>
   <h2>Our team is working on the issue. We will be back soon!</h2>
+  <div id="timer">2:60:60:60</div>
   <p>Don’t get bored! Try our AI here 👉 <a href="https://starfishaibot.vercel.app/" target="_blank">https://starfishaibot.vercel.app/</a></p>
+
+  <script>
+    const timerElement = document.getElementById('timer');
+    const startTime = 2 * 24 * 60 * 60 * 1000; // 2 days in milliseconds
+
+    // Get saved end time from local storage or calculate it
+    let endTime = localStorage.getItem('endTime');
+    if (!endTime) {
+      endTime = Date.now() + startTime;
+      localStorage.setItem('endTime', endTime);
+    }
+
+    function updateTimer() {
+      const now = Date.now();
+      const timeRemaining = Math.max(0, endTime - now);
+
+      const days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
+
+      timerElement.textContent = `${days}:${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+
+      if (timeRemaining <= 0) {
+        clearInterval(timerInterval);
+        timerElement.textContent = "Time's up!";
+        localStorage.removeItem('endTime');
+      }
+    }
+
+    const timerInterval = setInterval(updateTimer, 1000); // Update every second
+    updateTimer(); // Initial call to display the starting time
+  </script>
 </body>
 </html>
