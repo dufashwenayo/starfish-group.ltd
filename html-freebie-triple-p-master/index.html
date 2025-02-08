@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Page Under Maintenance</title>
+  <title>Static Countdown Timer</title>
   <style>
     body {
       display: flex;
@@ -16,73 +16,53 @@
       background-color: #121212;
       color: #ffffff;
     }
-    img {
-      border-radius: 50%;
-      width: 150px;
-      height: 150px;
-      margin-bottom: 20px;
-    }
     h1 {
       color: #ffcc00;
       margin-bottom: 10px;
+    }
+    #timer {
+      font-size: 48px;
+      font-weight: bold;
+      color: #007BFF;
+      margin-top: 20px;
     }
     p {
       color: #cccccc;
       font-size: 14px;
     }
-    a {
-      color: #4caf50;
-      text-decoration: none;
-      font-weight: bold;
-      margin-top: 20px;
-    }
-    #timer {
-      font-size: 36px;
-      font-weight: bold;
-      color: #007BFF;
-      margin-top: 20px;
-    }
   </style>
 </head>
 <body>
-  <img src="https://lh3.googleusercontent.com/a-/ALV-UjUjiEqirLK1mV03ob82Nvms0Bpc7fAmmlR0b2l8EfWEc_yQDYM=s265-w265-h265" alt="Profile Picture">
   <h1>⚠️ Page Under Maintenance</h1>
   <p>DUFASHWENAYO PATRICK IS WORKING ON THE ISSUE. WE WILL BE BACK SOON!</p>
-  <h2>Our team is working on the issue. We will be back soon!</h2>
-  <div id="timer">2:60:60:60</div>
-  <p>Don’t get bored! Try our AI here 👉 <a href="https://starfishaibot.vercel.app/" target="_blank">https://starfishaibot.vercel.app/</a></p>
+  <div id="timer">02:00:00</div>
 
   <script>
-    const timerElement = document.getElementById('timer');
-    const startTime = 2 * 24 * 60 * 60 * 1000; // 2 days in milliseconds
+    let timerElement = document.getElementById('timer');
 
-    // Get saved end time from local storage or calculate it
-    let endTime = localStorage.getItem('endTime');
-    if (!endTime) {
-      endTime = Date.now() + startTime;
-      localStorage.setItem('endTime', endTime);
-    }
+    // Set the starting time (2 hours in seconds)
+    let timeLeft = 2 * 60 * 60; // 2 hours = 7200 seconds
 
     function updateTimer() {
-      const now = Date.now();
-      const timeRemaining = Math.max(0, endTime - now);
+      // Calculate hours, minutes, and seconds
+      let hours = Math.floor(timeLeft / 3600);
+      let minutes = Math.floor((timeLeft % 3600) / 60);
+      let seconds = timeLeft % 60;
 
-      const days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
+      // Display the time in the format HH:MM:SS
+      timerElement.textContent = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
 
-      timerElement.textContent = `${days}:${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-
-      if (timeRemaining <= 0) {
-        clearInterval(timerInterval);
+      // Decrease the time left by 1 second
+      if (timeLeft > 0) {
+        timeLeft--;
+      } else {
+        clearInterval(timerInterval); // Stop the timer when it reaches zero
         timerElement.textContent = "Time's up!";
-        localStorage.removeItem('endTime');
       }
     }
 
-    const timerInterval = setInterval(updateTimer, 1000); // Update every second
-    updateTimer(); // Initial call to display the starting time
+    // Start the timer and update every second
+    const timerInterval = setInterval(updateTimer, 1000);
   </script>
 </body>
 </html>
